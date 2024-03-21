@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, {useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
 
 const InfoContainer = ({ userData, setUserData }) => {
@@ -13,6 +13,10 @@ const InfoContainer = ({ userData, setUserData }) => {
     // Implement saving edited data here
     setEditIndex(null); // Resetting editIndex here after every save
   };
+  useEffect(() => {
+    localStorage.setItem("userData", JSON.stringify(userData));
+  }, [userData]);
+  console.log(userData);
 
   return (
     <div className="p-6">

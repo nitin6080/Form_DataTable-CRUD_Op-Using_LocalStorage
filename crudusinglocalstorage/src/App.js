@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import { BrowserRouter as Router, Routes, Route } from "react-router-dom";
 import ValidatedForm from "./components/Form";
 import InfoContainer from "./components/Table";
@@ -9,7 +9,9 @@ function App() {
   // debugger;
   console.log(editMode);
   //CREATE i.e. Function to add new user data
-  const [userData, setUserData] = useState([
+  const [userData, setUserData] = useState(() => {
+    const storedData = localStorage.getItem("userData");
+    return storedData ? JSON.parse(storedData) : [
     {
       id:1,
       username: "Alphonso",
@@ -31,7 +33,11 @@ function App() {
       password: "1975",
       confirmPassword: "1975",
     },
-  ]);
+  ]});
+  useEffect(() => {
+    localStorage.setItem("userData", JSON.stringify(userData));
+  }, [userData]);
+  
   console.log({ userData });
   return (
     <div>

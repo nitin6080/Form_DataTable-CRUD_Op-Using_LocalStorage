@@ -57,6 +57,7 @@ const ValidatedForm = ({
         return user.id === id ? newUser : user;
       });
       setUserData(updatedUserData);
+      console.log(updatedUserData);
       setEditMode(false);
     } else {
       const data = {
@@ -68,6 +69,7 @@ const ValidatedForm = ({
 
     navigate("/"); // Navigate back to the list after updating or adding a user
   };
+  
 
   console.log(userData);
   return (

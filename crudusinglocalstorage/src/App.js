@@ -20,7 +20,7 @@ function App() {
       confirmPassword: "1961",
     },
     {
-      id:2,
+      id:2, 
       username: "Bueno",
       email: "B@gmail.com",
       password: "1972",

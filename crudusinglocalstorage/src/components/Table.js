@@ -1,22 +1,38 @@
-import React, {useEffect, useState } from "react";
+import React, { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
+import ValidatedForm from "./Form";
 
 const InfoContainer = ({ userData, setUserData }) => {
   const navigate = useNavigate();
   const [editIndex, setEditIndex] = useState(null);
 
+  const [editMode, setEditMode] = useState(false); // Moved editMode state
   const editUserData = (index) => {
+    // setEditIndex(index);
     setEditIndex(index);
+    setEditMode(true); // Set editMode to true when editing
   };
 
   const saveUserData = () => {
+    console.log(userData);
     // Implement saving edited data here
     setEditIndex(null); // Resetting editIndex here after every save
+  };
+
+  const saveEditedContent = (index, field, content) => {
+    // Update the user data with the edited content
+    const updatedUserData = [...userData];
+    updatedUserData[index][field] = content;
+    setUserData(updatedUserData);
+
+    // Reset editIndex after saving
+    setEditIndex(null);
   };
   useEffect(() => {
     localStorage.setItem("userData", JSON.stringify(userData));
   }, [userData]);
-  console.log(userData);
+
+  console.log("updatedCell", userData);
 
   return (
     <div className="p-6">
@@ -45,55 +61,60 @@ const InfoContainer = ({ userData, setUserData }) => {
         </thead>
         <tbody className="">
           {userData.map((data, index) => (
-            <tr className="" key={index}>
-              <td
-                className={
-                  editIndex === index
-                    ? "relative border-2 border-yellow-400"
-                    : "border-2 border-blue-400"
-                }
+            <tr
+              className=""
+              key={index}
+              onClick={(e) => console.log("value", e)}
+            >
+              <td className={ editIndex === index ? "relative border-2 border-yellow-400" : "border-2 border-blue-400" }
                 contentEditable={editIndex === index}
+                onBlur={(e) => {
+                  console.log(e.target.innerText);
+                  saveEditedContent(index, "username", e.target.innerText);
+                }}
               >
-                {data.username}{''}
+                {data.username}
+                {/* {""}
+                {editIndex === index && (
+                  <span className="absolute top-0 right-1">✎</span>
+                )} */}
+              </td>
+              <td className={ editIndex === index ? "relative border-2 border-yellow-400" : "border-2 border-blue-400" }
+                contentEditable={editIndex === index}
+                onBlur={(e) => {
+                  console.log(e.target.innerText);
+                  saveEditedContent(index, "email", e.target.innerText);
+                }}
+              >
+                {data.email}
+                {""}
+                {/* {editIndex === index && (
+                  <span className="absolute top-0 right-1">✎</span>
+                )} */}
+              </td>
+              <td className={ editIndex === index ? "relative border-2 border-yellow-400" : "border-2 border-blue-400" }
+                contentEditable={editIndex === index}
+                onBlur={(e) => {
+                  console.log(e.target.innerText);
+                  saveEditedContent(index, "password", e.target.innerText);
+                }}
+              >
+                {data.password}
+                {""}
                 {editIndex === index && (
                   <span className="absolute top-0 right-1">✎</span>
                 )}
               </td>
               <td
-                className={
-                  editIndex === index
-                    ? "relative border-2 border-yellow-400"
-                    : "border-2 border-blue-400"
-                }
+                className={ editIndex === index ? "relative border-2 border-yellow-400" : "border-2 border-blue-400"}
                 contentEditable={editIndex === index}
+                onBlur={(e) => {
+                  console.log(e.target.innerText);
+                  saveEditedContent(index, "confirmPassword", e.target.innerText);
+                }}
               >
-                {data.email}{''}
-                {editIndex === index && (
-                  <span className="absolute top-0 right-1">✎</span>
-                )}
-              </td>
-              <td
-                className={
-                  editIndex === index
-                    ? "relative border-2 border-yellow-400"
-                    : "border-2 border-blue-400"
-                }
-                contentEditable={editIndex === index}
-              >
-                {data.password}{''}
-                {editIndex === index && (
-                  <span className="absolute top-0 right-1">✎</span>
-                )}
-              </td>
-              <td
-                className={
-                  editIndex === index
-                    ? "relative border-2 border-yellow-400"
-                    : "border-2 border-blue-400"
-                }
-                contentEditable={editIndex === index}
-              >
-                {data.confirmPassword}{''}
+                {data.confirmPassword}
+                {""}
                 {editIndex === index && (
                   <span className="absolute top-0 right-1">✎</span>
                 )}
@@ -120,6 +141,15 @@ const InfoContainer = ({ userData, setUserData }) => {
           ))}
         </tbody>
       </table>
+      {/* Pass editMode and setEditMode to ValidatedForm */}
+      <div className="hidden">
+        <ValidatedForm
+          userData={userData}
+          setUserData={setUserData}
+          editMode={editMode}
+          setEditMode={setEditMode}
+        />
+      </div>
     </div>
   );
 };

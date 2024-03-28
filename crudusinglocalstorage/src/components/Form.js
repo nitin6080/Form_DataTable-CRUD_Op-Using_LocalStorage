@@ -42,6 +42,7 @@ const ValidatedForm = ({
       alert("Passwords do not match");
       return;
     }
+
     const newUser = {
       username,
       email,
@@ -51,13 +52,13 @@ const ValidatedForm = ({
     // debugger;
     if (editMode) {
       const { id } = editMode || {};
-      console.log(editMode);
+      // console.log(editMode); // to check data prior edit
       const updatedUserData = userData.map((user) => {
         console.log({ user });
         return user.id === id ? newUser : user;
       });
       setUserData(updatedUserData);
-      console.log(updatedUserData);
+      // console.log(updatedUserData); // to check data after edit
       setEditMode(false);
     } else {
       const data = {
@@ -69,9 +70,8 @@ const ValidatedForm = ({
 
     navigate("/"); // Navigate back to the list after updating or adding a user
   };
-  
 
-  console.log(userData);
+  // console.log(userData); // final data post all ops
   return (
     <div className="flex h-full justify-center items-center">
       <form
